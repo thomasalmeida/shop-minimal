@@ -1,24 +1,42 @@
-# README
+# Ruby Engineer Coding Challenge
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Observações
 
-Things you may want to cover:
+Eu optei por rodar o banco de dados via Docker. Caso for rodar o banco localmente, alterar as credenciais do banco em `database.yml`.
 
-* Ruby version
+## Como instalar
 
-* System dependencies
+```
+bundle install
+bundle exec rake db:drop db:create db:migrate
+```
 
-* Configuration
+## Como rodar aplicação
 
-* Database creation
+```
+rails s
+```
 
-* Database initialization
+## Como rodar os testes
 
-* How to run the test suite
+```
+bundle exec rspec
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+## Endpoints
 
-* Deployment instructions
+```
+POST /products
 
-* ...
+Exemplo: `curl -d '{"name": "super produto", "price": 100.2, "photo_url": "https://google.com/img.jpg"}' -H "Content-Type: application/json" -X POST http://localhost:3000/products`
+```
+
+```
+GET /products
+Exemplo: `curl -H "Content-Type: application/json" -X GET http://localhost:3000/products\?page\=0&name=sup`
+```
+
+```
+PATCH /products/:id/deactivate
+Exemplo: `curl -H "Content-Type: application/json" -X PATCH http://localhost:3000/products/deactivate/1`
+```
