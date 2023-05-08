@@ -1,4 +1,5 @@
 class ProductsController < ApplicationController
+  before_action :set_product, only: :deactivate
 
   PRODUCTS_PER_PAGE = 5
 
@@ -26,9 +27,23 @@ class ProductsController < ApplicationController
     end
   end
 
+  def deactivate
+    render json: {message: "#{@product.name} already deactivated"}, status: :unprocessable_entity and return unless @product.status
+
+    ProductDeactivate.new(product: @product).perform!
+
+    render json: {message: "#{@product.name} inactivated"}
+  rescue => e
+    render json: e, status: :unprocessable_entity
+  end
+
   private
     def product_params
       params.require(:product).permit(:name, :price, :photo_url)
+    end
+
+    def set_product
+      @product = Product.find(params[:id])
     end
 end
 
